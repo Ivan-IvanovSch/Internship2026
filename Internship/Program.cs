@@ -1,4 +1,5 @@
 
+using Internship.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Internship

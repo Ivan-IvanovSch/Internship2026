@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Internship.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Internship
+namespace Internship.Repositories
 {
     public class ShopContext : DbContext
     {
