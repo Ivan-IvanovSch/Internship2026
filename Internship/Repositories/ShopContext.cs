@@ -1,4 +1,4 @@
-﻿using Internship.Models;
+﻿using Internship.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Internship.Repositories
@@ -11,5 +11,7 @@ namespace Internship.Repositories
         }
 
         public DbSet<Product> Products => Set<Product>();
+
+        public DbSet<Account> Accounts => Set<Account>();
     }
 }
