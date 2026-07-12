@@ -16,7 +16,18 @@ namespace Internship.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost(Name = "CreateAccount")]
+        [HttpGet("login")]
+
+        public async Task<IActionResult> LogInAccount(string username, string password)
+        {
+            var account = await _accountService.LogInAccountAsync(username, password);
+
+            if (account is null) return Unauthorized();
+
+            return Ok(account);
+        }
+
+        [HttpPost(Name = "Sign Up")]
 
         public async Task<IActionResult> CreateAccount(string username, string email, string password, string name)
         {
@@ -25,7 +36,7 @@ namespace Internship.Controllers
             return Ok();
         }
 
-        [HttpGet (Name = "GetAccount")]
+        [HttpGet (Name = "Find Account")]
         public async Task<IActionResult> GetAccount(int id)
         {
             var account = await _accountService.GetAccountAsync(id);
@@ -35,7 +46,7 @@ namespace Internship.Controllers
             return Ok(account);
         }
 
-        [HttpPut (Name = "UpdateAccount")]
+        [HttpPut (Name = "Edit Account")]
 
         public async Task<IActionResult> UpdateAccount(int id, string email, string password, string name)
         {
@@ -44,7 +55,7 @@ namespace Internship.Controllers
             return Ok();
         }
 
-        [HttpDelete (Name = "DeleteAccount")]
+        [HttpDelete (Name = "Delete Account")]
 
         public async Task<IActionResult> DeleteAccount(int id)
         {

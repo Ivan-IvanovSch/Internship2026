@@ -18,6 +18,15 @@ namespace Internship.Services
             _context = context;
         }
 
+        public async Task<Account?> LogInAccountAsync(string username, string password)
+        {
+            var account = await _context.Accounts.FirstAsync(a => a.Username == username);
+
+            if (account is null || account.Password != password) return null;
+
+            return account;
+        }
+
         public async Task? CreateAccountAsync(string username, string email, string password, string name)
         {
             if (_context.Accounts.Any(a => a.Username == username || a.Email == email)) throw new ArgumentException("Account already exists");

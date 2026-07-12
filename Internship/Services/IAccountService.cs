@@ -4,6 +4,8 @@ namespace Internship.Services
 {
     public interface IAccountService
     {
+        Task<Account?> LogInAccountAsync(string username, string password);
+
         Task? CreateAccountAsync(string username, string email, string password, string name);
 
         Task<Account?> GetAccountAsync(int id);
