@@ -1,4 +1,4 @@
-namespace Internship
+namespace Internship.Models.Entities
 {
     public class WeatherForecast
     {

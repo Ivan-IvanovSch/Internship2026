@@ -1,6 +1,7 @@
 
 using Internship.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Internship.Services;
 
 namespace Internship
 {
@@ -11,6 +12,8 @@ namespace Internship
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDbContext<ShopContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
             // Add services to the container.
 
@@ -31,7 +34,6 @@ namespace Internship
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

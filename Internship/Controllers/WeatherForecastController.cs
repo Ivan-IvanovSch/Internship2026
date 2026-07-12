@@ -1,3 +1,4 @@
+using Internship.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Internship.Controllers
