@@ -1,4 +1,5 @@
 ﻿using Internship.Controllers;
+using Internship.Models.DTOs;
 using Internship.Models.Entities;
 using Internship.Repositories;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -18,25 +19,25 @@ namespace Internship.Services
             _context = context;
         }
 
-        public async Task<Account?> LogInAccountAsync(string username, string password)
+        public async Task<Account?> LogInAccountAsync(LogInAccountDTO dto)
         {
-            var account = await _context.Accounts.FirstAsync(a => a.Username == username);
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Username == dto.Username);
 
-            if (account is null || account.Password != password) return null;
+            if (account is null || account.Password != dto.Password) return null;
 
             return account;
         }
 
-        public async Task? CreateAccountAsync(string username, string email, string password, string name)
+        public async Task? CreateAccountAsync(CreateAccountDTO dto)
         {
-            if (_context.Accounts.Any(a => a.Username == username || a.Email == email)) throw new ArgumentException("Account already exists");
+            if (_context.Accounts.Any(a => a.Username == dto.Username || a.Email == dto.Email)) throw new ArgumentException("Account already exists");
 
             Account account = new Account
             {
-                Username = username,
-                Email = email,
-                Password = password,
-                Name = name
+                Username = dto.Username,
+                Email = dto.Email,
+                Password = dto.Password,
+                Name = dto.Name
             };
 
             _context.Accounts.Add(account);
@@ -48,7 +49,7 @@ namespace Internship.Services
 
         public async Task<Account?> GetAccountAsync(int id)
         {
-            return await _context.Accounts.FirstAsync(a => a.Id == id);
+            return await _context.Accounts.FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task? UpdateAccountAsync(int id, string email, string password, string name)
@@ -66,9 +67,9 @@ namespace Internship.Services
             return;
         }
 
-        public async Task? DeleteAccountAsync(int id)
+        public async Task? DeleteAccountAsync(Account account)
         {
-            _context.Accounts.Remove(_context.Accounts.First(a => a.Id == id));
+            _context.Accounts.Remove(account);
 
             await _context.SaveChangesAsync();
 

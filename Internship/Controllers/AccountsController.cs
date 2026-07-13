@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Internship.Services;
 using Internship.Models.Entities;
+using Internship.Models.DTOs;
 
 namespace Internship.Controllers
 {
@@ -16,27 +17,29 @@ namespace Internship.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet("login")]
+        [HttpPost("LogIn")]
 
-        public async Task<IActionResult> LogInAccount(string username, string password)
+        public async Task<IActionResult> LogInAccount(LogInAccountDTO dto)
         {
-            var account = await _accountService.LogInAccountAsync(username, password);
+            var account = await _accountService.LogInAccountAsync(dto);
 
             if (account is null) return Unauthorized();
 
             return Ok(account);
         }
 
-        [HttpPost(Name = "Sign Up")]
+        [HttpPost("SignUp")]
 
-        public async Task<IActionResult> CreateAccount(string username, string email, string password, string name)
+        public async Task<IActionResult> CreateAccount(CreateAccountDTO dto)
         {
-            await _accountService.CreateAccountAsync(username, email, password, name);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            await _accountService.CreateAccountAsync(dto);
 
             return Ok();
         }
 
-        [HttpGet (Name = "Find Account")]
+        [HttpGet ("FindAccount")]
         public async Task<IActionResult> GetAccount(int id)
         {
             var account = await _accountService.GetAccountAsync(id);
@@ -46,7 +49,7 @@ namespace Internship.Controllers
             return Ok(account);
         }
 
-        [HttpPut (Name = "Edit Account")]
+        [HttpPut ("EditAccount")]
 
         public async Task<IActionResult> UpdateAccount(int id, string email, string password, string name)
         {
@@ -55,11 +58,15 @@ namespace Internship.Controllers
             return Ok();
         }
 
-        [HttpDelete (Name = "Delete Account")]
+        [HttpDelete ("DeleteAccount")]
 
         public async Task<IActionResult> DeleteAccount(int id)
         {
-            await _accountService.DeleteAccountAsync(id);
+            var account = await _accountService.GetAccountAsync(id);
+
+            if (account is null) return NotFound();
+
+            await _accountService.DeleteAccountAsync(account);
 
             return Ok();
         }
